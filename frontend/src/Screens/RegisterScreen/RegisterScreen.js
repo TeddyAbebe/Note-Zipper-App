@@ -22,6 +22,7 @@ const RegisterScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
     if (password !== confirmpassword) {
       setMessage("Passwords Do Not Match");
     } else {
@@ -41,13 +42,41 @@ const RegisterScreen = () => {
           { name, pic, email, password },
           config
         );
-
+        console.log(data);
         setLoading(false);
-        localStorage.setItem("useInfo", JSON.stringify(data));
-        // setError(false);
+        localStorage.setItem("userInfo", JSON.stringify(data));
       } catch (error) {
-        setError(error.reponse.data.message);
+        setError(error.response.data.message);
+        setLoading(false);
       }
+    }
+  };
+
+  const postDetails = (pics) => {
+    if (!pics) {
+      return setPicMessage("Please Select an Image");
+    }
+    setPicMessage(null);
+
+    if (pics.type === "image/jpeg" || pics.type === "image/png" || pics.type === "image/jpg") {
+      const data = new FormData();
+      data.append("file", pics);
+      data.append("upload_preset", "notezipper");
+      data.append("cloud_name", "teddyabebe");
+      fetch("https://api.cloudinary.com/v1_1/teddyabebe/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.url);
+          setPic(data.url.toString());
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return setPicMessage("Please Select an Image");
     }
   };
 
@@ -110,9 +139,9 @@ const RegisterScreen = () => {
             />
           </Form.Group>
 
-          {/* {picMessage && (
+          {picMessage && (
             <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
-          )} */}
+          )}
 
           <Form.Group controlId="pic">
             <Form.Label className="text-cyan-500 font-semibold">
@@ -120,6 +149,7 @@ const RegisterScreen = () => {
             </Form.Label>
 
             <Form.Control
+              onChange={(e) => postDetails(e.target.files[0])}
               className="py-1 font-mono"
               type="file"
               id="custom-file"

@@ -5,12 +5,13 @@ import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const Header = () => {
+  const history = useHistory();
   return (
     <div>
-      <Navbar className="py-2" bg="primary" expand="lg" variant="dark" >
+      <Navbar className="py-2" bg="primary" expand="lg" variant="dark">
         <Container>
           <Navbar.Brand>
             <Link to="/">Note Zipper</Link>
@@ -39,7 +40,14 @@ const Header = () => {
               <NavDropdown title="Tewodros Abebe" id="navbarScrollingDropdown">
                 <NavDropdown.Item href="#action3">My Profile</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action5">Log Out</NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={() => {
+                    localStorage.removeItem("userInfo");
+                    history.push("/");
+                  }}
+                >
+                  Log Out
+                </NavDropdown.Item>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>

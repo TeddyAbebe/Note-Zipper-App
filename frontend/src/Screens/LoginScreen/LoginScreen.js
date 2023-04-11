@@ -15,8 +15,6 @@ const LoginScreen = ({ history }) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
-
-
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -46,6 +44,8 @@ const LoginScreen = ({ history }) => {
       setLoading(false);
     }
   };
+
+
 
   return (
     <MainScreen title="Login">

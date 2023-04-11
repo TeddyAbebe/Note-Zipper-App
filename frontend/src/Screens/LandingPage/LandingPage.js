@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 
+
 const LandingPage = () => {
   // useEffect(() => {
   //   const userInfo = localStorage.getItem("userInfo");
@@ -9,12 +10,14 @@ const LandingPage = () => {
   //   }
   // }, [history]);
 
+
+
   return (
     <div className="landing">
       <Container>
         <Row>
           <Col>
-            <div className="w-full text-center">
+            <div className="w-full text-center mt-1">
               <div>
                 <h1 className="text-8xl lg:py-0 lg:px-24 md:text-3xl sm:text-2xl max-sm:text-2xl">
                   Welcome To Note Zipper
@@ -33,6 +36,7 @@ const LandingPage = () => {
                     Login
                   </Button>
                 </a>
+
                 <a href="/register">
                   <Button
                     size="lg"
@@ -43,6 +47,8 @@ const LandingPage = () => {
                   </Button>
                 </a>
               </div>
+
+          
             </div>
           </Col>
         </Row>
