@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-
 
 const LandingPage = () => {
   // useEffect(() => {
@@ -9,8 +8,6 @@ const LandingPage = () => {
   //     history.push("/mynotes");
   //   }
   // }, [history]);
-
-
 
   return (
     <div className="landing">
@@ -47,8 +44,6 @@ const LandingPage = () => {
                   </Button>
                 </a>
               </div>
-
-          
             </div>
           </Col>
         </Row>

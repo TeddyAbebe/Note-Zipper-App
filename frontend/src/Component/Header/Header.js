@@ -6,9 +6,22 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../Actions/userActions";
 
 const Header = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const userLogin = useSelector((state) => state.userLogin);
+
+  const { userInfo } = userLogin;
+
+  const logoutHandler = () => {
+    dispatch(logout());
+    history.push("/");
+  };
+
   return (
     <div>
       <Navbar className="py-2" bg="primary" expand="lg" variant="dark">
@@ -40,12 +53,7 @@ const Header = () => {
               <NavDropdown title="Tewodros Abebe" id="navbarScrollingDropdown">
                 <NavDropdown.Item href="#action3">My Profile</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item
-                  onClick={() => {
-                    localStorage.removeItem("userInfo");
-                    history.push("/");
-                  }}
-                >
+                <NavDropdown.Item onClick={logoutHandler}>
                   Log Out
                 </NavDropdown.Item>
               </NavDropdown>
