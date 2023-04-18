@@ -3,10 +3,15 @@ import MainScreen from "../../Component/MainScreen";
 import { Link } from "react-router-dom";
 import { Badge, Button, Card, useAccordionButton } from "react-bootstrap";
 import Accordion from "react-bootstrap/Accordion";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { listNotes } from "../../Actions/notesAction";
 
 const MyNotes = () => {
-  const [notes, setNotes] = useState();
+  const dispatch = useDispatch();
+
+  const noteList = useSelector((state) => state.noteList);
+
+  const { loading, notes, error } = noteList;
 
   function Toggle({ children, eventKey }) {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
@@ -28,17 +33,11 @@ const MyNotes = () => {
     }
   };
 
-  const fetchNotes = async () => {
-    const { data } = await axios.get("http://localhost:3001/api/notes");
-
-    setNotes(data);
-  };
-
   console.log(notes);
 
   useEffect(() => {
-    fetchNotes();
-  }, []);
+    dispatch(listNotes());
+  }, [dispatch]);
   return (
     <div>
       <MainScreen title="Welcome Back Tewodros Abebe...">
