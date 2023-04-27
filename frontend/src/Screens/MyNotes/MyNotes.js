@@ -13,10 +13,13 @@ const MyNotes = () => {
   const history = useHistory();
 
   const noteList = useSelector((state) => state.noteList);
+  const { loading, notes, error } = noteList;
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const { loading, notes, error } = noteList;
+  const noteCreate = useSelector((state) => state.noteCreate);
+  const { success: successCreate } = noteCreate;
 
   function Toggle({ children, eventKey }) {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
@@ -38,14 +41,14 @@ const MyNotes = () => {
     }
   };
 
-  console.log(notes);
+  // console.log(notes);
 
   useEffect(() => {
     dispatch(listNotes());
     if (!userInfo) {
       history.push("/");
     }
-  }, [dispatch]);
+  }, [dispatch, successCreate, history, userInfo]);
   return (
     <div>
       <MainScreen title={`Welcome Back ${userInfo.name}.. `}>
@@ -54,7 +57,7 @@ const MyNotes = () => {
         </Link>
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         {loading && <Loading />}
-        {notes?.map((note) => (
+        {notes?.reverse().map((note) => (
           <Accordion key={note._id}>
             <Card className="m-2.5">
               <Card.Header className="flex">
