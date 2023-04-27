@@ -1,5 +1,5 @@
 const express = require("express");
-const notes = require("./data/notes");
+// const notes = require("./data/notes");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
