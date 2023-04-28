@@ -3,7 +3,7 @@ import MainScreen from "../../Component/MainScreen";
 import axios from "axios";
 import { Button, Card, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { updateNoteAction } from "../../Actions/notesAction";
+import { deleteNoteAction, updateNoteAction } from "../../Actions/notesAction";
 import ErrorMessage from "../../Component/ErrorMessage";
 import Loading from "../../Component/Loading";
 import ReactMarkdown from "react-markdown";
@@ -19,15 +19,15 @@ function SingleNote({ match, history }) {
   const noteUpdate = useSelector((state) => state.noteUpdate);
   const { loading, error } = noteUpdate;
 
-  //   const noteDelete = useSelector((state) => state.noteDelete);
-  //   const { loading: loadingDelete, error: errorDelete } = noteDelete;
+  const noteDelete = useSelector((state) => state.noteDelete);
+  const { loading: loadingDelete, error: errorDelete } = noteDelete;
 
-  //   const deleteHandler = (id) => {
-  //     if (window.confirm("Are you Sure?")) {
-  //       dispatch(deleteNoteAction(id));
-  //     }
-  //     history.push("/mynotes");
-  //   };
+  const deleteHandler = (id) => {
+    if (window.confirm("Are you Sure?")) {
+      dispatch(deleteNoteAction(id));
+    }
+    history.push("/mynotes");
+  };
 
   useEffect(() => {
     const fetching = async () => {
@@ -65,10 +65,12 @@ function SingleNote({ match, history }) {
         <Card.Header>Edit your Note</Card.Header>
         <Card.Body>
           <Form onSubmit={updateHandler}>
-            {/* {loadingDelete && <Loading />} */}
-            {/* {errorDelete && (
-                        <ErrorMessage varaint="danger">{errorDelete}</ErrorMessage>
-                    )} */}
+            
+            {loadingDelete && <Loading />}
+            {errorDelete && (
+              <ErrorMessage varaint="danger">{errorDelete}</ErrorMessage>
+            )}
+
             {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
 
             <Form.Group controlId="title">
@@ -121,7 +123,7 @@ function SingleNote({ match, history }) {
             <Button
               className="mx-2"
               variant="danger"
-              //   onClick={() => deleteHandler(match.params.id)}
+              onClick={() => deleteHandler(match.params.id)}
             >
               Delete Note
             </Button>

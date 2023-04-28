@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import { Badge, Button, Card, useAccordionButton } from "react-bootstrap";
 import Accordion from "react-bootstrap/Accordion";
 import { useDispatch, useSelector } from "react-redux";
-import { listNotes } from "../../Actions/notesAction";
+import { deleteNoteAction, listNotes } from "../../Actions/notesAction";
 import Loading from "../../Component/Loading";
 import ErrorMessage from "../../Component/ErrorMessage";
 
@@ -24,6 +24,13 @@ const MyNotes = () => {
   const noteUpdate = useSelector((state) => state.noteUpdate);
   const { success: successUpdate } = noteUpdate;
 
+  const noteDelete = useSelector((state) => state.noteDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = noteDelete;
+
   function Toggle({ children, eventKey }) {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
       console.log("totally custom!")
@@ -42,6 +49,7 @@ const MyNotes = () => {
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
+      dispatch(deleteNoteAction(id));
     }
   };
 
@@ -52,7 +60,14 @@ const MyNotes = () => {
     if (!userInfo) {
       history.push("/");
     }
-  }, [dispatch, successCreate, history, userInfo, successUpdate]);
+  }, [
+    dispatch,
+    successCreate,
+    history,
+    userInfo,
+    successUpdate,
+    successDelete,
+  ]);
 
   return (
     <div>
@@ -60,6 +75,12 @@ const MyNotes = () => {
         <Link to="createnote">
           <Button className="ml-2.5 mb-1.5">Create New Note</Button>
         </Link>
+
+        {errorDelete && (
+          <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
+        )}
+        {loadingDelete && <Loading />}
+
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         {loading && <Loading />}
 
