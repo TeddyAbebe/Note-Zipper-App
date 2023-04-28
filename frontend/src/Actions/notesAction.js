@@ -95,12 +95,12 @@ export const updateNoteAction =
       });
 
       const {
-        useLogin: { userInfo },
+        userLogin: { userInfo },
       } = getState();
 
       const config = {
         headers: {
-          "content-Type": "application/json",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${userInfo.token}`,
         },
       };

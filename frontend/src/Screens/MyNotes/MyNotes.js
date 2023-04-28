@@ -21,6 +21,9 @@ const MyNotes = () => {
   const noteCreate = useSelector((state) => state.noteCreate);
   const { success: successCreate } = noteCreate;
 
+  const noteUpdate = useSelector((state) => state.noteUpdate);
+  const { success: successUpdate } = noteUpdate;
+
   function Toggle({ children, eventKey }) {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
       console.log("totally custom!")
@@ -36,6 +39,7 @@ const MyNotes = () => {
       </button>
     );
   }
+
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
     }
@@ -48,7 +52,8 @@ const MyNotes = () => {
     if (!userInfo) {
       history.push("/");
     }
-  }, [dispatch, successCreate, history, userInfo]);
+  }, [dispatch, successCreate, history, userInfo, successUpdate]);
+
   return (
     <div>
       <MainScreen title={`Welcome Back ${userInfo.name}.. `}>
@@ -57,6 +62,7 @@ const MyNotes = () => {
         </Link>
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         {loading && <Loading />}
+
         {notes?.reverse().map((note) => (
           <Accordion key={note._id}>
             <Card className="m-2.5">
