@@ -8,7 +8,7 @@ import { deleteNoteAction, listNotes } from "../../Actions/notesAction";
 import Loading from "../../Component/Loading";
 import ErrorMessage from "../../Component/ErrorMessage";
 
-const MyNotes = () => {
+const MyNotes = ({ search }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -84,46 +84,51 @@ const MyNotes = () => {
         {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         {loading && <Loading />}
 
-        {notes?.reverse().map((note) => (
-          <Accordion key={note._id}>
-            <Card className="m-2.5">
-              <Card.Header className="flex">
-                <span className="text-white font-serif no-underline flex-1 cursor-pointer text-lg self-center ">
-                  <Toggle as={Card.Text} eventKey="0">
-                    {note.title}
-                  </Toggle>
-                </span>
-                <div>
-                  <Button href={`/note/${note._id}`}>Edit</Button>
-                  <Button
-                    variant="danger"
-                    className="mx-2"
-                    onClick={() => deleteHandler(note._id)}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </Card.Header>
+        {notes
+          ?.reverse()
+          .filter((filteredNote) =>
+            filteredNote.title.toLowerCase().includes(search.toLowerCase())
+          )
+          .map((note) => (
+            <Accordion key={note._id}>
+              <Card className="m-2.5">
+                <Card.Header className="flex">
+                  <span className="text-white font-serif no-underline flex-1 cursor-pointer text-lg self-center ">
+                    <Toggle as={Card.Text} eventKey="0">
+                      {note.title}
+                    </Toggle>
+                  </span>
+                  <div>
+                    <Button href={`/note/${note._id}`}>Edit</Button>
+                    <Button
+                      variant="danger"
+                      className="mx-2"
+                      onClick={() => deleteHandler(note._id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </Card.Header>
 
-              <Accordion.Collapse eventKey="0">
-                <Card.Body>
-                  <h4>
-                    <Badge bg="dark">Category - {note.category}</Badge>
-                  </h4>
-                  <blockquote className="blockquote mb-0">
-                    <p>{note.content}</p>
-                    <footer className="blockquote-footer">
-                      Created on{" "}
-                      <cite title="Source Title">
-                        {note.createdAt.substring(0, 10)}
-                      </cite>
-                    </footer>
-                  </blockquote>
-                </Card.Body>
-              </Accordion.Collapse>
-            </Card>
-          </Accordion>
-        ))}
+                <Accordion.Collapse eventKey="0">
+                  <Card.Body>
+                    <h4>
+                      <Badge bg="dark">Category - {note.category}</Badge>
+                    </h4>
+                    <blockquote className="blockquote mb-0">
+                      <p>{note.content}</p>
+                      <footer className="blockquote-footer">
+                        Created on{" "}
+                        <cite title="Source Title">
+                          {note.createdAt.substring(0, 10)}
+                        </cite>
+                      </footer>
+                    </blockquote>
+                  </Card.Body>
+                </Accordion.Collapse>
+              </Card>
+            </Accordion>
+          ))}
       </MainScreen>
     </div>
   );

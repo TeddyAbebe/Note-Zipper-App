@@ -8,8 +8,9 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../Actions/userActions";
+import { FormControl } from "react-bootstrap";
 
-const Header = () => {
+const Header = ({ setSearch }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -29,15 +30,15 @@ const Header = () => {
           <Navbar.Brand>
             <Link to="/">Note Zipper</Link>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbarScroll" />
-          <Navbar.Collapse id="navbarScroll">
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="m-auto">
-              <Form className="d-flex">
-                <Form.Control
-                  type="search"
+              <Form inline>
+                <FormControl
+                  type="text"
                   placeholder="Search"
-                  className="me-2"
-                  aria-label="Search"
+                  className="mr-sm-2"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </Form>
             </Nav>

@@ -65,7 +65,6 @@ function SingleNote({ match, history }) {
         <Card.Header>Edit your Note</Card.Header>
         <Card.Body>
           <Form onSubmit={updateHandler}>
-            
             {loadingDelete && <Loading />}
             {errorDelete && (
               <ErrorMessage varaint="danger">{errorDelete}</ErrorMessage>
@@ -114,14 +113,14 @@ function SingleNote({ match, history }) {
               />
             </Form.Group>
 
-            {loading && <Loading size={50} />}
+            {loading && <Loading size={20} />}
 
-            <Button variant="primary" type="submit">
+            <Button className="mx-2 my-2" variant="primary" type="submit">
               Update Note
             </Button>
 
             <Button
-              className="mx-2"
+              className="mx-2 my-2"
               variant="danger"
               onClick={() => deleteHandler(match.params.id)}
             >
