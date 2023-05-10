@@ -33,32 +33,49 @@ const Header = ({ setSearch }) => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="m-auto">
-              <Form inline>
-                <FormControl
-                  type="text"
-                  placeholder="Search"
-                  className="mr-sm-2"
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </Form>
+              {userInfo ? (
+                <Form inline>
+                  <FormControl
+                    type="text"
+                    placeholder="Search"
+                    className="mr-sm-2"
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </Form>
+              ) : (
+                <h2 className="font-serif font-black ">Think and Write</h2>
+              )}
             </Nav>
-            <Nav
-              className="my-2 my-lg-0"
-              style={{ maxHeight: "100px" }}
-              navbarScroll
-            >
-              <Nav.Link>
-                <Link to="/mynotes">My Notes</Link>
-              </Nav.Link>
+            {userInfo ? (
+              <Nav
+                className="my-2 my-lg-0"
+                style={{ maxHeight: "100px" }}
+                navbarScroll
+              >
+                <Nav.Link>
+                  <Link to="/mynotes">My Notes</Link>
+                </Nav.Link>
 
-              <NavDropdown title={userInfo.name} id="navbarScrollingDropdown">
-                <NavDropdown.Item href="#action3">My Profile</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={logoutHandler}>
-                  Log Out
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
+                <NavDropdown
+                  title={userInfo?.name}
+                  id="navbarScrollingDropdown"
+                >
+                  <NavDropdown.Item href="/profile">
+                    My Profile
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Log Out
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+            ) : (
+              <Nav.Link>
+                <Link to="/login">
+                  <b>Login</b>
+                </Link>
+              </Nav.Link>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>
