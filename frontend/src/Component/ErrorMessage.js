@@ -6,7 +6,7 @@ const ErrorMessage = ({ variant = "info", children }) => {
     <div>
       <Alert
         variant={variant}
-        className="text-sm w-60 p-2 font-serif animate-bounce"
+        className="text-sm m-0 w-44 p-2 font-serif animate-bounce"
       >
         <strong>{children}</strong>
       </Alert>

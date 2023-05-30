@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import MainScreen from "../../Component/MainScreen";
 import { Button, Col, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import ErrorMessage from "../../Component/ErrorMessage";
+import Loading from "../../Component/Loading";
+import { updateProfile } from "../../Actions/userActions";
 
 const ProfileScreen = () => {
   const [name, setName] = useState("");
@@ -20,6 +23,18 @@ const ProfileScreen = () => {
 
   const userUpdate = useSelector((state) => state.userUpdate);
   const { loading, error, success } = userUpdate;
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push("/");
+    } else {
+      setName(userInfo.name);
+      setEmail(userInfo.email);
+      setPic(userInfo.pic);
+    }
+  }, [history, userInfo]);
 
   const postDetails = (pics) => {
     if (!pics) {
@@ -52,14 +67,22 @@ const ProfileScreen = () => {
       return setPicMessage("Please Select an Image");
     }
   };
+  const submitHandler = (e) => {
+    e.preventDefault();
 
+    if (password === confirmPassword)
+      dispatch(updateProfile({ name, email, password, pic }));
+  };
   return (
     <MainScreen title="EDIT PROFILE">
       <div>
-        <Row className="profileContainer">
+        <Row className="flex gap-5 flex-col md:flex-row">
           <Col md={6}>
-            <Form>
-              <Form.Group controlId="name">
+            <Form onSubmit={submitHandler}>
+              {loading && <Loading />}
+              {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+
+              <Form.Group controlId="name" className="my-2">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   className="py-1 font-mono"
@@ -70,7 +93,7 @@ const ProfileScreen = () => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="email">
+              <Form.Group controlId="email" className="my-2">
                 <Form.Label>Email Address</Form.Label>
                 <Form.Control
                   className="py-1 font-mono"
@@ -81,7 +104,7 @@ const ProfileScreen = () => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="password">
+              <Form.Group controlId="password" className="my-2">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   className="py-1 font-mono"
@@ -92,7 +115,7 @@ const ProfileScreen = () => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="confirmPassword">
+              <Form.Group controlId="confirmPassword" className="my-2">
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
                   className="py-1 font-mono"
@@ -119,13 +142,24 @@ const ProfileScreen = () => {
                 />
               </Form.Group>
 
-              <Button type="submit" variant="primary" className="my-2">
-                Update
-              </Button>
+              <div className="flex flex-col md:flex-row items-center gap-4">
+                <Button type="submit" variant="primary" className="my-2">
+                  Update
+                </Button>
+                {success && (
+                  <ErrorMessage variant="success">
+                    Updated Successfully
+                  </ErrorMessage>
+                )}
+              </div>
             </Form>
           </Col>
-          <Col className="flex,items-center, justify-center">
-            <img src={pic} alt="name" className="ProfilPic" />
+          <Col className="flex justify-center items-center">
+            <img
+              src={pic}
+              alt="Profile"
+              className="w-[50%] flex tems-center p-[]"
+            />
           </Col>
         </Row>
       </div>
